@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
@@ -8,26 +8,30 @@ export const styles = StyleSheet.create({
     },
     titulo: {
         textAlign: 'center',
-        marginTop: 10,
         marginBottom: 10,
+        marginTop: 15,
         fontSize: 30
+    },
+    listado: {
+        justifyContent: 'center',
+        marginVertical: '75%',
+        textAlign: 'center',
+        flex: 1,
     },
     fab: {
         backgroundColor: '#3a86ff',
         position: 'absolute',
+        borderRadius: 100,
         margin: 20,
         bottom: 0,
         right: 0,
-        borderRadius: 100,
     },
     item: {
         backgroundColor: '#778da9',
         marginHorizontal: 10,
-        textAlign: 'center',
         marginVertical: 5,
         borderRadius: 15,
-        color: "white",
-        padding: 20,
+        color: 'white',
         flex: 1,
     },
 });
