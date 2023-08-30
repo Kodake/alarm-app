@@ -1,6 +1,7 @@
 import { observable, action, makeAutoObservable } from 'mobx';
 import notifee, { AlarmType, AndroidImportance, RepeatFrequency, TimestampTrigger, TimestampTriggerAlarmManager, TriggerType } from '@notifee/react-native';
-import { NOTIFICATION_STRINGS } from '../messages/appMessages';
+import { ALERT_MESSAGES, NOTIFICATION_STRINGS } from '../messages/appMessages';
+import AlertTime from '../components/alertTime';
 import moment from 'moment';
 
 class SharedStateStore {
@@ -43,10 +44,49 @@ class SharedStateStore {
     this.selectedDates = this.selectedDates.filter(d => !moment(d).isSame(moment(date)));
   }
 
-  displayNotification = async (date: Date, body: string) => {
+  confirmedDate(hoursAndMinutes: { hours: number; minutes: number }) {
+    const newDate = this.createNewDate(hoursAndMinutes.hours, this.minutes);
+
+    if (!this.hasDuplicateTime(newDate)) {
+      this.addSelectedDate(newDate);
+    } else {
+      this.showDuplicateAlert();
+    }
+  }
+
+  createNewDate = (hours: number, minutes: number): Date => {
+    const newDate = new Date();
+    newDate.setDate(newDate.getDate());
+    newDate.setHours(hours, minutes);
+    return newDate;
+  };
+
+  hasDuplicateTime = (newDate: Date): boolean => {
+    return this.selectedDates.some(date => {
+      return (
+        date.getHours() === newDate.getHours() && date.getMinutes() === newDate.getMinutes()
+      );
+    });
+  };
+
+  showDuplicateAlert = () => {
+    AlertTime(ALERT_MESSAGES.duplicatedError, ALERT_MESSAGES.duplicatedAlarm);
+  };
+
+  validateTimeBeforeToday = async (date: Date): Promise<boolean> => {
+    const currentDate = new Date();
+    const isBefore = moment(date).isBefore(currentDate);
+
+    return isBefore;
+  };
+
+  displayNotification = async (date: Date) => {
+    if (await this.validateTimeBeforeToday(date)) {
+      AlertTime(ALERT_MESSAGES.notFutureError, ALERT_MESSAGES.timeBeforeAlarm);
+      return;
+    }
+
     await notifee.requestPermission();
-    await notifee.openAlarmPermissionSettings();
-    date.setSeconds(0);
 
     const channelId = await notifee.createChannel({
       id: date.toString(),
@@ -57,7 +97,7 @@ class SharedStateStore {
     });
 
     const alarmManager: TimestampTriggerAlarmManager = {
-      type: AlarmType.SET_ALARM_CLOCK,
+      type: AlarmType.SET_EXACT_AND_ALLOW_WHILE_IDLE,
       allowWhileIdle: true
     }
 
@@ -71,7 +111,7 @@ class SharedStateStore {
     await notifee.createTriggerNotification({
       id: date.toString(),
       title: NOTIFICATION_STRINGS.notificationTitle,
-      body: body,
+      body: moment(date).format('YYYY/MM/DD HH:mm'),
       android: { channelId },
     }, trigger);
   };

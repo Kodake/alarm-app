@@ -11,8 +11,10 @@ export const CONFIRMATION_MESSAGES = {
 };
 
 export const ALERT_MESSAGES = {
-    error: 'Alarma duplicada',
+    duplicatedError: 'Alarma duplicada',
+    notFutureError: 'Alarma atrasada',
     duplicatedAlarm: 'Intente con otros valores',
+    timeBeforeAlarm: 'La alarma que intenta activar no está actualizada a futuro',
     confirmationOk: 'Ok',
     confirmationCancel: 'Cancelar'
 }

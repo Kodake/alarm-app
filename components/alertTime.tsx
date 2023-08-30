@@ -1,11 +1,11 @@
 import { Alert } from 'react-native'
 import { ALERT_MESSAGES } from '../messages/appMessages';
 
-const AlertTime = () => {
+const AlertTime = (title: string, message: string) => {
     return (
         Alert.alert(
-            ALERT_MESSAGES.error,
-            ALERT_MESSAGES.duplicatedAlarm,
+            title,
+            message,
             [
                 { text: ALERT_MESSAGES.confirmationOk, style: 'cancel' },
                 { text: ALERT_MESSAGES.confirmationCancel, style: 'cancel' },

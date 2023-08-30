@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: '75%',
         textAlign: 'center',
+        color: '#606060',
         flex: 1,
     },
     fab: {
@@ -28,7 +29,7 @@ export const styles = StyleSheet.create({
     },
     item: {
         backgroundColor: '#778da9',
-        marginHorizontal: 10,
+        marginHorizontal: 5,
         marginVertical: 5,
         borderRadius: 15,
         color: 'white',

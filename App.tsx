@@ -6,12 +6,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from './styles/appStyles';
 import { theme } from './theme/appThemes';
 import { observer } from 'mobx-react';
-import { ALARM_STRINGS } from './messages/appMessages';
+import { ALARM_STRINGS, ALERT_MESSAGES } from './messages/appMessages';
 import EmptyListMessage from './components/emptyListMessage';
-import AlertConfirmation from './components/alertConfirmation';
 import AlarmListItem from './components/alarmListItem';
 import store from './store/sharedStateStore';
-import AlertTime from './components/alertTime';
 
 const App = () => {
   const onDismiss = () => {
@@ -19,22 +17,14 @@ const App = () => {
   };
 
   const onConfirm = ({ hours, minutes }: { hours: number; minutes: number }) => {
-    store.setVisibility(false);
-
-    const newDate = new Date();
-    newDate.setDate(newDate.getDate());
-    newDate.setHours(hours, minutes);
-
-    const hasDuplicateTime = store.selectedDates.some(date => {
-      return (
-        date.getHours() === newDate.getHours() && date.getMinutes() === newDate.getMinutes()
-      );
-    });
-
-    if (!hasDuplicateTime) {
+    
+    const newDate = store.createNewDate(hours, minutes);
+    
+    if (!store.hasDuplicateTime(newDate)) {
+      store.setVisibility(false);
       store.addSelectedDate(newDate);
     } else {
-      AlertTime();
+      store.showDuplicateAlert();
     }
   };
 
@@ -48,7 +38,7 @@ const App = () => {
           data={store.selectedDates}
           keyExtractor={(item) => item.toString()}
           renderItem={({ item }: { item: Date }) => (
-            <AlarmListItem item={item} alertConfirmation={AlertConfirmation} />
+            <AlarmListItem item={item} />
           )}
         />
         <SafeAreaProvider>
