@@ -12,9 +12,6 @@ import AlarmListItem from './components/alarmListItem';
 import store from './store/sharedStateStore';
 import GradientBackground from './components/gradientBackground';
 
-const FROM_COLOR = 'rgb(255, 255, 255)';
-const TO_COLOR = 'rgb(0,102,84)';
-
 const App = () => {
   const onDismiss = () => {
     store.setVisibility(false);
