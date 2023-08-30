@@ -6,10 +6,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from './styles/appStyles';
 import { theme } from './theme/appThemes';
 import { observer } from 'mobx-react';
-import { ALARM_STRINGS, ALERT_MESSAGES } from './messages/appMessages';
+import { ALARM_STRINGS } from './messages/appMessages';
 import EmptyListMessage from './components/emptyListMessage';
 import AlarmListItem from './components/alarmListItem';
 import store from './store/sharedStateStore';
+import GradientBackground from './components/gradientBackground';
+
+const FROM_COLOR = 'rgb(255, 255, 255)';
+const TO_COLOR = 'rgb(0,102,84)';
 
 const App = () => {
   const onDismiss = () => {
@@ -17,9 +21,9 @@ const App = () => {
   };
 
   const onConfirm = ({ hours, minutes }: { hours: number; minutes: number }) => {
-    
+
     const newDate = store.createNewDate(hours, minutes);
-    
+
     if (!store.hasDuplicateTime(newDate)) {
       store.setVisibility(false);
       store.addSelectedDate(newDate);
@@ -31,17 +35,18 @@ const App = () => {
   return (
     <>
       <PaperProvider theme={theme}>
-        <Headline style={styles.titulo}>{ALARM_STRINGS.title}</Headline>
-        <FlatList
-          centerContent
-          ListEmptyComponent={EmptyListMessage}
-          data={store.selectedDates}
-          keyExtractor={(item) => item.toString()}
-          renderItem={({ item }: { item: Date }) => (
-            <AlarmListItem item={item} />
-          )}
-        />
         <SafeAreaProvider>
+        <GradientBackground>
+          <Headline style={styles.titulo}>{ALARM_STRINGS.title}</Headline>
+          <FlatList
+            centerContent
+            ListEmptyComponent={EmptyListMessage}
+            data={store.selectedDates}
+            keyExtractor={(item) => item.toString()}
+            renderItem={({ item }: { item: Date }) => (
+              <AlarmListItem item={item} />
+            )}
+          />
           <View style={styles.container}>
             <FAB
               animated
@@ -58,6 +63,7 @@ const App = () => {
               onConfirm={onConfirm}
             />
           </View>
+          </GradientBackground>
         </SafeAreaProvider>
       </PaperProvider>
     </>

@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+    textColor: {
+        color: 'white'
+    },
     container: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -9,6 +12,7 @@ export const styles = StyleSheet.create({
     titulo: {
         textAlign: 'center',
         marginBottom: 10,
+        color: 'white',
         marginTop: 15,
         fontSize: 30
     },
@@ -16,7 +20,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: '75%',
         textAlign: 'center',
-        color: '#606060',
+        color: '#4a4e69',
         flex: 1,
     },
     fab: {
@@ -28,11 +32,10 @@ export const styles = StyleSheet.create({
         right: 0,
     },
     item: {
-        backgroundColor: '#778da9',
-        marginHorizontal: 5,
+        backgroundColor: '#4a4e69',
+        marginHorizontal: 10,
         marginVertical: 5,
         borderRadius: 15,
-        color: 'white',
         flex: 1,
     },
 });

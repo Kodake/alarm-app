@@ -25,6 +25,8 @@ const AlarmListItem: React.FC<Props> = ({ item }) => {
 
     return (
         <List.Item
+            titleStyle={styles.textColor}
+            descriptionStyle={styles.textColor}
             style={styles.item}
             key={item.toString()}
             title={moment(item).format('YYYY/MM/DD')}
