@@ -13,11 +13,15 @@ const AlarmListItem: React.FC<Props> = ({ item }) => {
     }
 
     const handleDeleteAlarm = async (item: Date) => {
+        store.deleteSelectedDate(item);
+    }
+
+    const handleConfirmAlarm = async (item: Date) => {
         Alert.alert(
             CONFIRMATION_MESSAGES.deleteConfirmation,
             CONFIRMATION_MESSAGES.deleteConfirmationDescription,
             [
-                { text: CONFIRMATION_MESSAGES.deleteConfirmationYes, onPress: async () => store.deleteSelectedDate(item) },
+                { text: CONFIRMATION_MESSAGES.deleteConfirmationYes, onPress: async () => handleDeleteAlarm(item) },
                 { text: CONFIRMATION_MESSAGES.deleteConfirmationCancel, style: 'cancel' },
             ],
         )
@@ -31,7 +35,7 @@ const AlarmListItem: React.FC<Props> = ({ item }) => {
             key={item.toString()}
             title={moment(item).format('YYYY/MM/DD')}
             description={moment(item).format('HH:mm')}
-            onLongPress={() => handleDeleteAlarm(item)}
+            onLongPress={() => handleConfirmAlarm(item)}
             onPress={() => { handleSetAlarm(item) }}
         />
     );

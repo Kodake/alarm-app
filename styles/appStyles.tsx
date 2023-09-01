@@ -32,11 +32,11 @@ export const styles = StyleSheet.create({
         right: 0,
     },
     item: {
-        opacity: 0.6,
         backgroundColor: '#4a4e69',
         marginHorizontal: 10,
         marginVertical: 5,
         borderRadius: 15,
+        opacity: 0.6,
         flex: 1,
     },
 });
