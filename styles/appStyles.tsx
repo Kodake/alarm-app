@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
         marginVertical: '75%',
         textAlign: 'center',
         color: '#4a4e69',
+        opacity: 0.6,
         flex: 1,
     },
     fab: {

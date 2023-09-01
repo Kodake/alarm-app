@@ -1,6 +1,13 @@
-import { observable, action, makeAutoObservable } from 'mobx';
-import notifee, { AlarmType, AndroidImportance, RepeatFrequency, TimestampTrigger, TimestampTriggerAlarmManager, TriggerType } from '@notifee/react-native';
-import { ALERT_MESSAGES, NOTIFICATION_STRINGS } from '../messages/appMessages';
+import {observable, action, makeAutoObservable} from 'mobx';
+import notifee, {
+  AlarmType,
+  AndroidImportance,
+  RepeatFrequency,
+  TimestampTrigger,
+  TimestampTriggerAlarmManager,
+  TriggerType,
+} from '@notifee/react-native';
+import {ALERT_MESSAGES, NOTIFICATION_STRINGS} from '../messages/appMessages';
 import AlertTime from '../components/alertTime';
 import moment from 'moment';
 
@@ -20,7 +27,7 @@ class SharedStateStore {
       setHours: action,
       setVisibility: action,
       addSelectedDate: action,
-      deleteSelectedDate: action
+      deleteSelectedDate: action,
     });
   }
 
@@ -41,10 +48,12 @@ class SharedStateStore {
   }
 
   deleteSelectedDate(date: Date) {
-    this.selectedDates = this.selectedDates.filter(d => !moment(d).isSame(moment(date)));
+    this.selectedDates = this.selectedDates.filter(
+      d => !moment(d).isSame(moment(date)),
+    );
   }
 
-  confirmedDate(hoursAndMinutes: { hours: number; minutes: number }) {
+  confirmedDate(hoursAndMinutes: {hours: number; minutes: number}) {
     const newDate = this.createNewDate(hoursAndMinutes.hours, this.minutes);
 
     if (!this.hasDuplicateTime(newDate)) {
@@ -64,7 +73,8 @@ class SharedStateStore {
   hasDuplicateTime = (newDate: Date): boolean => {
     return this.selectedDates.some(date => {
       return (
-        date.getHours() === newDate.getHours() && date.getMinutes() === newDate.getMinutes()
+        date.getHours() === newDate.getHours() &&
+        date.getMinutes() === newDate.getMinutes()
       );
     });
   };
@@ -97,23 +107,33 @@ class SharedStateStore {
     });
 
     const alarmManager: TimestampTriggerAlarmManager = {
-      type: AlarmType.SET_EXACT_AND_ALLOW_WHILE_IDLE,
-      allowWhileIdle: true
-    }
+      type: AlarmType.SET_ALARM_CLOCK,
+      allowWhileIdle: true,
+    };
+
+    const timestamp = moment({
+      hour: date.getHours(),
+      minute: date.getMinutes(),
+    });
+
+    const unixTimestamp = timestamp.valueOf();
 
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
-      timestamp: date.getTime(),
+      timestamp: unixTimestamp,
+      repeatFrequency: RepeatFrequency.DAILY,
       alarmManager: alarmManager,
-      repeatFrequency: RepeatFrequency.DAILY
     };
 
-    await notifee.createTriggerNotification({
-      id: date.toString(),
-      title: NOTIFICATION_STRINGS.notificationTitle,
-      body: moment(date).format('YYYY/MM/DD HH:mm'),
-      android: { channelId },
-    }, trigger);
+    await notifee.createTriggerNotification(
+      {
+        id: date.toString(),
+        title: NOTIFICATION_STRINGS.notificationTitle,
+        body: moment(date).format('YYYY/MM/DD HH:mm'),
+        android: {channelId},
+      },
+      trigger,
+    );
   };
 }
 
