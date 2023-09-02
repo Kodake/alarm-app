@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginVertical: 5,
         borderRadius: 15,
-        opacity: 0.75555,
+        opacity: 0.75,
         flex: 1,
     },
 });
