@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     textColor: {
-        color: 'white'
+        color: '#FFFFFF'
     },
     container: {
         justifyContent: 'center',
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginVertical: 5,
         borderRadius: 15,
-        opacity: 0.6,
+        opacity: 0.75555,
         flex: 1,
     },
 });

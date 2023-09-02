@@ -1,4 +1,4 @@
-import {observable, action, makeAutoObservable} from 'mobx';
+import { observable, action, makeAutoObservable } from 'mobx';
 import notifee, {
   AlarmType,
   AndroidImportance,
@@ -7,7 +7,7 @@ import notifee, {
   TimestampTriggerAlarmManager,
   TriggerType,
 } from '@notifee/react-native';
-import {ALERT_MESSAGES, NOTIFICATION_STRINGS} from '../messages/appMessages';
+import { ALERT_MESSAGES, NOTIFICATION_STRINGS } from '../messages/appMessages';
 import AlertTime from '../components/alertTime';
 import moment from 'moment';
 
@@ -53,7 +53,7 @@ class SharedStateStore {
     );
   }
 
-  confirmedDate(hoursAndMinutes: {hours: number; minutes: number}) {
+  confirmedDate(hoursAndMinutes: { hours: number; minutes: number }) {
     const newDate = this.createNewDate(hoursAndMinutes.hours, this.minutes);
 
     if (!this.hasDuplicateTime(newDate)) {
@@ -130,12 +130,16 @@ class SharedStateStore {
         id: date.toString(),
         title: NOTIFICATION_STRINGS.notificationTitle,
         body: moment(date).format('YYYY/MM/DD HH:mm'),
-        android: {channelId},
+        android: { channelId },
       },
       trigger,
     );
   };
-}
+
+  cancelNotification = async (date: Date) => {
+    await notifee.cancelTriggerNotification(date.toString())
+  }
+};
 
 const sharedStateStore = new SharedStateStore();
 export default sharedStateStore;

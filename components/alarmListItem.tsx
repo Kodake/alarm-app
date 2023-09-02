@@ -1,5 +1,5 @@
-import React from 'react';
-import { List } from 'react-native-paper';
+import React, { useState } from 'react';
+import { List, Switch } from 'react-native-paper';
 import { styles } from '../styles/appStyles';
 import { Props } from '../interfaces/appInterfaces';
 import { Alert } from 'react-native';
@@ -8,13 +8,28 @@ import store from '../store/sharedStateStore';
 import moment from 'moment';
 
 const AlarmListItem: React.FC<Props> = ({ item }) => {
+    const [alarmState, setAlarmState] = useState<boolean>(false);
+
+    const onToggleSwitch = async (item: Date) => {
+        setAlarmState(!alarmState)
+        if (!alarmState) {
+            handleSetAlarm(item);
+        } else {
+            handleCancelAlarm(item);
+        }
+    };
+
     const handleSetAlarm = async (item: Date) => {
         store.displayNotification(item);
-    }
+    };
+
+    const handleCancelAlarm = async (item: Date) => {
+        store.cancelNotification(item);
+    };
 
     const handleDeleteAlarm = async (item: Date) => {
         store.deleteSelectedDate(item);
-    }
+    };
 
     const handleConfirmAlarm = async (item: Date) => {
         Alert.alert(
@@ -24,20 +39,27 @@ const AlarmListItem: React.FC<Props> = ({ item }) => {
                 { text: CONFIRMATION_MESSAGES.deleteConfirmationYes, onPress: async () => handleDeleteAlarm(item) },
                 { text: CONFIRMATION_MESSAGES.deleteConfirmationCancel, style: 'cancel' },
             ],
-        )
-    }
+        );
+    };
 
     return (
-        <List.Item
-            titleStyle={styles.textColor}
-            descriptionStyle={styles.textColor}
-            style={styles.item}
-            key={item.toString()}
-            title={moment(item).format('YYYY/MM/DD')}
-            description={moment(item).format('HH:mm')}
-            onLongPress={() => handleConfirmAlarm(item)}
-            onPress={() => { handleSetAlarm(item) }}
-        />
+        <>
+            <List.Item
+                titleStyle={styles.textColor}
+                descriptionStyle={styles.textColor}
+                style={styles.item}
+                key={item.toString()}
+                title={moment(item).format('YYYY/MM/DD')}
+                description={moment(item).format('HH:mm')}
+                onLongPress={() => handleConfirmAlarm(item)}
+                right={() => (
+                    <Switch
+                        value={alarmState}
+                        onValueChange={() => onToggleSwitch(item)}
+                    />
+                )}
+            />
+        </>
     );
 };
 
