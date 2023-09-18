@@ -130,7 +130,7 @@ class SharedStateStore {
         id: date.toString(),
         title: NOTIFICATION_STRINGS.notificationTitle,
         body: moment(date).format('YYYY/MM/DD HH:mm'),
-        android: { channelId },
+        android: { channelId, loopSound: true },
       },
       trigger,
     );

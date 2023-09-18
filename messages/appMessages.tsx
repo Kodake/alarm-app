@@ -21,7 +21,7 @@ export const ALERT_MESSAGES = {
 
 export const NOTIFICATION_STRINGS = {
     notificationChannel: 'default',
-    notificationSound: 'default',
+    notificationSound: 'daydream',
     notificationChannelName: 'default channel',
     notificationTitle: 'Alarm App'
 };
