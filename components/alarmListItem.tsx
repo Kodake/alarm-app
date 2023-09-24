@@ -49,8 +49,7 @@ const AlarmListItem: React.FC<Props> = ({ item }) => {
                 descriptionStyle={styles.textColor}
                 style={styles.item}
                 key={item.toString()}
-                title={moment(item).format('YYYY/MM/DD')}
-                description={moment(item).format('HH:mm')}
+                title={moment(item).format('HH:mm')}
                 onLongPress={() => handleConfirmAlarm(item)}
                 right={() => (
                     <Switch

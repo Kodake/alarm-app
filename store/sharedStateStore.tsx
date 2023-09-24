@@ -91,10 +91,6 @@ class SharedStateStore {
   };
 
   displayNotification = async (date: Date) => {
-    if (await this.validateTimeBeforeToday(date)) {
-      AlertTime(ALERT_MESSAGES.notFutureError, ALERT_MESSAGES.timeBeforeAlarm);
-      return;
-    }
 
     await notifee.requestPermission();
 
@@ -129,7 +125,7 @@ class SharedStateStore {
       {
         id: date.toString(),
         title: NOTIFICATION_STRINGS.notificationTitle,
-        body: moment(date).format('YYYY/MM/DD HH:mm'),
+        body: moment(date).format('HH:mm'),
         android: { channelId, loopSound: true },
       },
       trigger,
